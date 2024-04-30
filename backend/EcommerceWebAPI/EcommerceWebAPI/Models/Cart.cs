@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.Xml;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Cryptography.Xml;
 
 namespace EcommerceWebAPI.Models
 {
@@ -11,6 +12,8 @@ namespace EcommerceWebAPI.Models
         public decimal Discount { get; set; }
         public int Quantity { get; set; } = 0;
         public decimal TotalPrice { get; set; }
+
+        [ForeignKey("ProductID")]
         public Products? products { get; set; }
     }
 }

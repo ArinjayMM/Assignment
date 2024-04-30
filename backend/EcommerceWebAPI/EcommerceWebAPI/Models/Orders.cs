@@ -1,5 +1,7 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace EcommerceWebAPI.Models
 {
     public class Orders
@@ -12,6 +14,8 @@ namespace EcommerceWebAPI.Models
         public decimal TotalPrice { get; set; }
         public string OrderStatus { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;
+
+        [ForeignKey("ProductID")]
         public Products? products { get; set; }
     }
 }

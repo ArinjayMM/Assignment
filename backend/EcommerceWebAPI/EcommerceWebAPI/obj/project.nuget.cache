@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fhnK1mlc7c1IsDm5c/GegeYsyoUL/HrKXYiN5BiVlioffTUgbJ8hkvF/KWJYXkvVqJqv38pZLyNEpqJhTyP0Vw==",
+  "dgSpecHash": "ymPdyRaEh+NzeLDKRtXAWHXJPTLCnt7Kr9vSGdhhI/4yYVfSaDng9XC6uPkYAqCzi4/4EzqKOpygK4C//oDYUg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\MalagaveArinjay\\Desktop\\Ecommerce Backup\\backend\\EcommerceWebAPI\\EcommerceWebAPI\\EcommerceWebAPI.csproj",
+  "projectFilePath": "C:\\Users\\MalagaveArinjay\\Desktop\\Assignment Repo\\Assignment\\backend\\EcommerceWebAPI\\EcommerceWebAPI\\EcommerceWebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MalagaveArinjay\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\MalagaveArinjay\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
