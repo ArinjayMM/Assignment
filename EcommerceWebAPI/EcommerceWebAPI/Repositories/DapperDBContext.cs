@@ -1,17 +1,21 @@
 ﻿using EcommerceWebAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace EcommerceWebAPI.Repositories
 {
-    public class DapperDBContext : DbContext
+    public class DapperDBContext
     {
-        public DapperDBContext(DbContextOptions<DapperDBContext> options) : base(options)
+        private readonly IConfiguration _configuration;
+        private readonly string _connection;
+
+        public DapperDBContext(IConfiguration configuration)
         {
+            _configuration = configuration;
+            _connection = configuration.GetConnectionString("DefaultConnection");
         }
 
-        public DbSet<Users> Users { get; set; }
-        public DbSet<Products> Products { get; set; }
-        public DbSet<Cart> Cart { get; set; }
-        public DbSet<Orders> Orders { get; set; }
+        public IDbConnection CreateConnection() => new SqlConnection(_connection);
     }
 }

@@ -1,6 +1,12 @@
-﻿using EcommerceWebAPI.Models;
+﻿using Dapper;
+using EcommerceWebAPI.Models;
 using EcommerceWebAPI.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EcommerceWebAPI.Repositories
@@ -14,36 +20,46 @@ namespace EcommerceWebAPI.Repositories
             _context = context;
         }
 
-        public async Task<Users> GetUserByEmail(string email, string password)
-        {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
-        }
-
         public async Task<Users> GetUserById(int id)
         {
-            return await _context.Users.FindAsync(id);
+            using IDbConnection dbConnection = _context.CreateConnection();
+            var parameters = new { Id = id };
+            return await dbConnection.QueryFirstOrDefaultAsync<Users>("userById", parameters, commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<Users> GetUserByEmail(string email, string password)
+        {
+            using IDbConnection dbConnection = _context.CreateConnection();
+            var parameters = new { Email = email, Password = password };
+            return await dbConnection.QueryFirstOrDefaultAsync<Users>("userByEmail", parameters, commandType: CommandType.StoredProcedure);
         }
 
         public async Task<Users> AddUser(Users user)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            using IDbConnection dbConnection = _context.CreateConnection();
+            var parameters = new
+            {
+                user.FirstName,
+                user.LastName,
+                user.Email,
+                user.Password
+            };
+            await dbConnection.ExecuteAsync("insertUser", parameters, commandType: CommandType.StoredProcedure);
             return user;
         }
 
         public async Task<Users> UpdateUser(string email, Users user)
         {
-            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-            if (existingUser != null)
+            using IDbConnection dbConnection = _context.CreateConnection();
+            var parameters = new
             {
-                existingUser.FirstName = user.FirstName;
-                existingUser.LastName = user.LastName;
-                existingUser.Email = user.Email;
-                existingUser.Password = user.Password;
-                existingUser.Status = user.Status;
-                await _context.SaveChangesAsync();
-            }
-            return existingUser;
+                user.FirstName,
+                user.LastName,
+                user.Email,
+                user.Password
+            };
+            await dbConnection.ExecuteAsync("updateUser", parameters, commandType: CommandType.StoredProcedure);
+            return user;
         }
     }
 }

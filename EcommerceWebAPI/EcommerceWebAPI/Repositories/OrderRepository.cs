@@ -1,9 +1,11 @@
-﻿using EcommerceWebAPI.Models;
+﻿using Dapper;
+using EcommerceWebAPI.Models;
 using EcommerceWebAPI.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace EcommerceWebAPI.Repositories
@@ -19,54 +21,58 @@ namespace EcommerceWebAPI.Repositories
 
         public async Task<IEnumerable<Orders>> GetAllOrders()
         {
-            return await _context.Orders.ToListAsync();
+            using IDbConnection dbConnection = _context.CreateConnection();
+            return await dbConnection.QueryAsync<Orders>("orderItems", commandType: CommandType.StoredProcedure);
         }
 
         public async Task<IEnumerable<Orders>> GetUserOrders(int userId)
         {
-            return await _context.Orders
-                .Where(o => o.UserId == userId)
-                .Include(o => o.products)
-                .ToListAsync();
+            using (IDbConnection dbConnection = _context.CreateConnection())
+            {
+                var parameters = new { UserId = userId };
+                var orders = await dbConnection.QueryAsync<Orders, Products, Orders>(
+                    "GetUserOrders",
+                    (order, product) =>
+                    {
+                        order.products = product;
+                        return order;
+                    },
+                    parameters,
+                    splitOn: "ID",
+                    commandType: CommandType.StoredProcedure);
+
+                return orders;
+            }
         }
 
         public async Task<Orders> PlaceOrder(Orders order)
         {
-            var product = await _context.Products.FindAsync(order.ProductID);
-            if (product == null)
+            using IDbConnection dbConnection = _context.CreateConnection();
+            var parameters = new
             {
-                throw new Exception($"Product not found for ID: {order.ProductID}");
-            }
-
-            order.TotalPrice = product.UnitPrice * order.Quantity;
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
+                order.UserId,
+                order.OrderNo,
+                order.ProductID,
+                order.Quantity,
+                order.OrderStatus,
+                order.CreatedOn
+            };
+            await dbConnection.ExecuteAsync("placeOrder", parameters, commandType: CommandType.StoredProcedure);
             return order;
         }
 
         public async Task<Orders> UpdateOrderStatus(int id, string orderStatus)
         {
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
-            {
-                throw new Exception($"Order not found for ID: {id}");
-            }
-
-            order.OrderStatus = orderStatus;
-            await _context.SaveChangesAsync();
-            return order;
+            using IDbConnection dbConnection = _context.CreateConnection();
+            var parameters = new { ID = id, OrderStatus = orderStatus };
+            return await dbConnection.QueryFirstOrDefaultAsync<Orders>("updateOrderStatus", parameters, commandType: CommandType.StoredProcedure);
         }
 
         public async Task<bool> DeleteOrder(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
-            {
-                return false;
-            }
-
-            _context.Orders.Remove(order);
-            await _context.SaveChangesAsync();
+            using IDbConnection dbConnection = _context.CreateConnection();
+            var parameters = new { Id = id };
+            await dbConnection.ExecuteAsync("deleteOrder", parameters, commandType: CommandType.StoredProcedure);
             return true;
         }
     }

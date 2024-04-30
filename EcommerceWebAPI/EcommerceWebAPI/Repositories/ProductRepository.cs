@@ -1,9 +1,11 @@
-﻿// Repositories/ProductRepository.cs
+﻿using Dapper;
 using EcommerceWebAPI.Models;
 using EcommerceWebAPI.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace EcommerceWebAPI.Repositories
@@ -19,36 +21,55 @@ namespace EcommerceWebAPI.Repositories
 
         public async Task<IEnumerable<Products>> GetAllProducts()
         {
-            return await _context.Products.ToListAsync();
+            using IDbConnection dbConnection = _context.CreateConnection();
+            return await dbConnection.QueryAsync<Products>("allProducts", commandType: CommandType.StoredProcedure);
         }
 
         public async Task<Products> GetProductById(int id)
         {
-            return await _context.Products.FindAsync(id);
+            using IDbConnection dbConnection = _context.CreateConnection();
+            var parameters = new { Id = id };
+            return await dbConnection.QueryFirstOrDefaultAsync<Products>("productById", parameters, commandType: CommandType.StoredProcedure);
         }
 
         public async Task<Products> AddProduct(Products product)
         {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            using IDbConnection dbConnection = _context.CreateConnection();
+            var parameters = new
+            {
+                product.Name,
+                product.Manufacturer,
+                product.MRP,
+                product.Discount,
+                product.ImageUrl,
+                product.Status
+            };
+            await dbConnection.ExecuteAsync("addProduct", parameters, commandType: CommandType.StoredProcedure);
             return product;
         }
 
         public async Task<Products> UpdateProduct(int id, Products product)
         {
-            _context.Entry(product).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            using IDbConnection dbConnection = _context.CreateConnection();
+            var parameters = new
+            {
+                product.ID,
+                product.Name,
+                product.Manufacturer,
+                product.MRP,
+                product.Discount,
+                product.ImageUrl,
+                product.Status
+            };
+            await dbConnection.ExecuteAsync("updateProduct", parameters, commandType: CommandType.StoredProcedure);
             return product;
         }
 
         public async Task<bool> DeleteProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-                return false;
-
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            using IDbConnection dbConnection = _context.CreateConnection();
+            var parameters = new { Id = id };
+            await dbConnection.ExecuteAsync("deleteProduct", parameters, commandType: CommandType.StoredProcedure);
             return true;
         }
     }
