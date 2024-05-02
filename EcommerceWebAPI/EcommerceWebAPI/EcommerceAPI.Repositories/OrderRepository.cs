@@ -13,10 +13,12 @@ namespace EcommerceWebAPI.Repositories
     public class OrderRepository : IOrderRepository
     {
         private readonly DapperDBContext _context;
+        private readonly ILogger<OrderRepository> _logger;
 
-        public OrderRepository(DapperDBContext context)
+        public OrderRepository(DapperDBContext context, ILogger<OrderRepository> logger)
         {
             _context = context;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<IEnumerable<Orders>> GetAllOrders()

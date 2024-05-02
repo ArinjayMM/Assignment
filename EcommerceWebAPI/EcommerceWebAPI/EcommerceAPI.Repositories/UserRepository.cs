@@ -1,23 +1,19 @@
 ﻿using Dapper;
 using EcommerceWebAPI.Models;
 using EcommerceWebAPI.Repositories.Interfaces;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EcommerceWebAPI.Repositories
 {
     public class UserRepository : IUserRepository
     {
         private readonly DapperDBContext _context;
+        private readonly ILogger<UserRepository> _logger;
 
-        public UserRepository(DapperDBContext context)
+        public UserRepository(DapperDBContext context, ILogger<UserRepository> logger)
         {
             _context = context;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<Users> GetUserById(int id)
@@ -27,10 +23,10 @@ namespace EcommerceWebAPI.Repositories
             return await dbConnection.QueryFirstOrDefaultAsync<Users>("userById", parameters, commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<Users> GetUserByEmail(string email, string password)
+        public async Task<Users> GetUserByEmail(string email)
         {
             using IDbConnection dbConnection = _context.CreateConnection();
-            var parameters = new { Email = email, Password = password };
+            var parameters = new { Email = email };
             return await dbConnection.QueryFirstOrDefaultAsync<Users>("userByEmail", parameters, commandType: CommandType.StoredProcedure);
         }
 

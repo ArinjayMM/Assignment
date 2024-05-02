@@ -12,10 +12,12 @@ namespace EcommerceWebAPI.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly ILogger<ProductController> _logger;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, ILogger<ProductController> logger)
         {
             _productService = productService;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
@@ -28,6 +30,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occured while fetching products !");
                 return BadRequest(ex.Message);
             }
         }
@@ -46,6 +49,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occured while fetching product details!");
                 return BadRequest(ex.Message);
             }
         }
@@ -60,6 +64,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occured while adding product !");
                 return BadRequest(ex.Message);
             }
         }
@@ -78,6 +83,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occured while updating product details !");
                 return BadRequest(ex.Message);
             }
         }
@@ -96,6 +102,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occured while deleting product !");
                 return BadRequest(ex.Message);
             }
         }

@@ -13,10 +13,12 @@ namespace EcommerceWebAPI.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly ILogger<OrderController> _logger;
 
-        public OrderController(IOrderService orderService)
+        public OrderController(IOrderService orderService, ILogger<OrderController> logger)
         {
             _orderService = orderService;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
@@ -29,6 +31,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occured while fetching ordered items !");
                 return BadRequest(ex.Message);
             }
         }
@@ -43,6 +46,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occured while fetching orderd items !");
                 return BadRequest(ex.Message);
             }
         }
@@ -58,7 +62,7 @@ namespace EcommerceWebAPI.Controllers
             catch (Exception ex)
             {
                 // Log the exception for further analysis
-                Console.WriteLine($"Error placing order: {ex}");
+                _logger.LogError(ex, "An error occured while placing the order !");
                 return BadRequest("An error occurred while placing the order.");
             }
         }
@@ -73,6 +77,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occured while updating order item !");
                 return BadRequest(ex.Message);
             }
         }
@@ -87,6 +92,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occured while deleting order item !");
                 return BadRequest(ex.Message);
             }
         }

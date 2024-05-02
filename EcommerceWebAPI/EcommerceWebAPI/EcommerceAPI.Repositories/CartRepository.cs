@@ -1,22 +1,19 @@
 ﻿using Dapper;
 using EcommerceWebAPI.Models;
 using EcommerceWebAPI.Repositories.Interfaces;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
 using System.Data;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace EcommerceWebAPI.Repositories
 {
     public class CartRepository : ICartRepository
     {
         private readonly DapperDBContext _context;
+        private readonly ILogger<CartRepository> _logger;
 
-        public CartRepository(DapperDBContext context)
+        public CartRepository(DapperDBContext context, ILogger<CartRepository> logger)
         {
             _context = context;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<IEnumerable<Cart>> GetAllCartItems()

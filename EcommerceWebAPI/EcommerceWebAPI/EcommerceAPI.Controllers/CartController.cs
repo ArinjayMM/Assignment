@@ -12,10 +12,12 @@ namespace EcommerceWebAPI.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartService _cartService;
+        private readonly ILogger<CartController> _logger;
 
-        public CartController(ICartService cartService)
+        public CartController(ICartService cartService, ILogger<CartController> logger)
         {
             _cartService = cartService;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
@@ -28,6 +30,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occured while fetching cart items !");
                 return BadRequest(ex.Message);
             }
         }
@@ -42,6 +45,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occured while fetching cart items !");
                 return BadRequest(ex.Message);
             }
         }
@@ -56,6 +60,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occured while adding cart item !");
                 return BadRequest(ex.Message);
             }
         }
@@ -70,6 +75,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occured while updating cart item !");
                 return BadRequest(ex.Message);
             }
         }
@@ -84,6 +90,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "An error occured while deleting cart item !");
                 return BadRequest(ex.Message);
             }
         }

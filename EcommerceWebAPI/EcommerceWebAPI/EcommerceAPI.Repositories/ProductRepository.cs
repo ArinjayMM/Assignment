@@ -1,22 +1,19 @@
 ﻿using Dapper;
 using EcommerceWebAPI.Models;
 using EcommerceWebAPI.Repositories.Interfaces;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Threading.Tasks;
 
 namespace EcommerceWebAPI.Repositories
 {
     public class ProductRepository : IProductRepository
     {
         private readonly DapperDBContext _context;
+        private readonly ILogger<ProductRepository> _logger;
 
-        public ProductRepository(DapperDBContext context)
+        public ProductRepository(DapperDBContext context, ILogger<ProductRepository> logger)
         {
             _context = context;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<IEnumerable<Products>> GetAllProducts()

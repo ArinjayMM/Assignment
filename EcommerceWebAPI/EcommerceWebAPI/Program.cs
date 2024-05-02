@@ -28,6 +28,7 @@ builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 
 builder.Services.AddTransient<DapperDBContext>();
+builder.Services.AddLogging();
 
 var app = builder.Build();
 
