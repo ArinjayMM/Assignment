@@ -1,6 +1,7 @@
 ﻿using EcommerceWebAPI.Models;
 using EcommerceWebAPI.Repositories.Interfaces;
 using EcommerceWebAPI.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace EcommerceWebAPI.Services
 {

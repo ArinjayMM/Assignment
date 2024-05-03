@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using EcommerceWebAPI.Models;
 using EcommerceWebAPI.Repositories.Interfaces;
+using Microsoft.Extensions.Logging;
 using System.Data;
 
 namespace EcommerceWebAPI.Repositories
@@ -45,6 +46,7 @@ namespace EcommerceWebAPI.Repositories
         public async Task<Cart> AddtoCart(Cart cart)
         {
             using IDbConnection dbConnection = _context.CreateConnection();
+            cart.Quantity = 1;
             var parameters = new
             {
                 cart.UserId,

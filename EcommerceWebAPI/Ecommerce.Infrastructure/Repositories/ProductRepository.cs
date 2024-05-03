@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using EcommerceWebAPI.Models;
 using EcommerceWebAPI.Repositories.Interfaces;
+using Microsoft.Extensions.Logging;
 using System.Data;
 
 namespace EcommerceWebAPI.Repositories
