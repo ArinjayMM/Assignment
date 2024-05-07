@@ -2,6 +2,10 @@
 using EcommerceWebAPI.Repositories.Interfaces;
 using EcommerceWebAPI.Services.Interfaces;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EcommerceWebAPI.Services
 {
@@ -20,6 +24,12 @@ namespace EcommerceWebAPI.Services
         {
             _logger.LogInformation("Getting all orders...");
             return await _orderRepository.GetAllOrders();
+        }
+
+        public async Task<IEnumerable<Orders>> SearchOrders(string searchTerm)
+        {
+            _logger.LogInformation("Getting order...");
+            return await _orderRepository.SearchOrders(searchTerm);
         }
 
         public async Task<IEnumerable<Orders>> GetUserOrders(int userId)

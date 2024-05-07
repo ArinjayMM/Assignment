@@ -1,4 +1,5 @@
 ﻿using EcommerceWebAPI.Models;
+using EcommerceWebAPI.Services;
 using EcommerceWebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -31,6 +32,24 @@ namespace EcommerceWebAPI.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occured while fetching products !");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<Products>>> SearchProducts(string? searchTerm = null)
+        {
+            try
+            {
+                var products = string.IsNullOrEmpty(searchTerm)
+                    ? await _productService.GetAllProducts()
+                    : await _productService.SearchProducts(searchTerm);
+
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while searching product !");
                 return BadRequest(ex.Message);
             }
         }

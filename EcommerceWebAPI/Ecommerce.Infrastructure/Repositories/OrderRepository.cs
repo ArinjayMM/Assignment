@@ -1,10 +1,7 @@
 ﻿using Dapper;
 using EcommerceWebAPI.Models;
 using EcommerceWebAPI.Repositories.Interfaces;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -25,6 +22,13 @@ namespace EcommerceWebAPI.Repositories
         {
             using IDbConnection dbConnection = _context.CreateConnection();
             return await dbConnection.QueryAsync<Orders>("orderItems", commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<IEnumerable<Orders>> SearchOrders(string searchTerm)
+        {
+            using IDbConnection dbConnection = _context.CreateConnection();
+            var parameters = new { SearchTerm = searchTerm };
+            return await dbConnection.QueryAsync<Orders>("searchOrders", parameters, commandType: CommandType.StoredProcedure);
         }
 
         public async Task<IEnumerable<Orders>> GetUserOrders(int userId)

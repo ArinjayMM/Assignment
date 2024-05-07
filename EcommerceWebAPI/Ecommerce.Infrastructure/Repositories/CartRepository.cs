@@ -1,8 +1,8 @@
-﻿using Dapper;
-using EcommerceWebAPI.Models;
+﻿using EcommerceWebAPI.Models;
 using EcommerceWebAPI.Repositories.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Data;
+using Dapper;
 
 namespace EcommerceWebAPI.Repositories
 {
@@ -46,7 +46,18 @@ namespace EcommerceWebAPI.Repositories
         public async Task<Cart> AddtoCart(Cart cart)
         {
             using IDbConnection dbConnection = _context.CreateConnection();
+
+            // Get product details to calculate total price
+            var product = await dbConnection.QueryFirstOrDefaultAsync<Products>(
+                "SELECT * FROM Products WHERE ID = @ProductId",
+                new { ProductId = cart.ProductID });
+
+            // Calculate total price based on quantity, unit price, and discount
             cart.Quantity = 1;
+            cart.UnitPrice = product.UnitPrice;
+            cart.Discount = product.Discount;
+            cart.TotalPrice = cart.Quantity * cart.UnitPrice;
+
             var parameters = new
             {
                 cart.UserId,
@@ -56,9 +67,11 @@ namespace EcommerceWebAPI.Repositories
                 cart.Quantity,
                 cart.TotalPrice
             };
+
             await dbConnection.ExecuteAsync("addCartItem", parameters, commandType: CommandType.StoredProcedure);
             return cart;
         }
+
 
         public async Task<Cart> UpdateCartItem(int id, Cart cart)
         {

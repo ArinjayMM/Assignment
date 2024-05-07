@@ -23,6 +23,13 @@ namespace EcommerceWebAPI.Repositories
             return await dbConnection.QueryAsync<Products>("allProducts", commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<IEnumerable<Products>> SearchProducts(string searchTerm)
+        {
+            using IDbConnection dbConnection = _context.CreateConnection();
+            var parameters = new { SearchTerm = searchTerm };
+            return await dbConnection.QueryAsync<Products>("searchProducts", parameters, commandType: CommandType.StoredProcedure);
+        }
+
         public async Task<Products> GetProductById(int id)
         {
             using IDbConnection dbConnection = _context.CreateConnection();

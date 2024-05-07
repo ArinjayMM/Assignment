@@ -36,6 +36,25 @@ namespace EcommerceWebAPI.Controllers
             }
         }
 
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<Orders>>> SearchOrders(string? searchTerm = null)
+        {
+            try
+            {
+                var orders = string.IsNullOrEmpty(searchTerm)
+                    ? await _orderService.GetAllOrders()
+                    : await _orderService.SearchOrders(searchTerm);
+
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while searching orders !");
+                return BadRequest(ex.Message);
+            }
+        }
+
+
         [HttpGet("{userId}")]
         public async Task<ActionResult<IEnumerable<Orders>>> GetUserOrders(int userId)
         {

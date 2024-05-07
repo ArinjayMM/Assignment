@@ -2,6 +2,9 @@
 using EcommerceWebAPI.Repositories.Interfaces;
 using EcommerceWebAPI.Services.Interfaces;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EcommerceWebAPI.Services
 {
@@ -20,6 +23,12 @@ namespace EcommerceWebAPI.Services
         {
             _logger.LogInformation("Getting all products...");
             return await _productRepository.GetAllProducts();
+        }
+
+        public async Task<IEnumerable<Products>> SearchProducts(string searchTerm)
+        {
+            _logger.LogInformation("Getting product...");
+            return await _productRepository.SearchProducts(searchTerm);
         }
 
         public async Task<Products> GetProductById(int id)

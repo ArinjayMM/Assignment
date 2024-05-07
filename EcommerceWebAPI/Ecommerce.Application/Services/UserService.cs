@@ -1,8 +1,9 @@
-﻿using BCrypt.Net;
-using EcommerceWebAPI.Models;
+﻿using EcommerceWebAPI.Models;
 using EcommerceWebAPI.Repositories.Interfaces;
 using EcommerceWebAPI.Services.Interfaces;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace EcommerceWebAPI.Services
 {
