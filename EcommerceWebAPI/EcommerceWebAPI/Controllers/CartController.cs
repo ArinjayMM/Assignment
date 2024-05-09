@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EcommerceWebAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using EcommerceWebAPI.Services.Interfaces;
+using Serilog;
 
 namespace EcommerceWebAPI.Controllers
 {
@@ -17,7 +15,7 @@ namespace EcommerceWebAPI.Controllers
         public CartController(ICartService cartService, ILogger<CartController> logger)
         {
             _cartService = cartService;
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = logger;
         }
 
         [HttpGet]
@@ -30,7 +28,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while fetching cart items !");
+                Log.Error("An error occured while fetching cart items! => {@ex}",ex);
                 return BadRequest(ex.Message);
             }
         }
@@ -45,7 +43,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while fetching cart items !");
+                Log.Error("An error occured while fetching cart items! => {@ex}", ex);
                 return BadRequest(ex.Message);
             }
         }
@@ -60,7 +58,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while adding cart item !");
+                Log.Error("An error occured while adding cart item => {@ex}",ex);
                 return BadRequest(ex.Message);
             }
         }
@@ -75,7 +73,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while updating cart item !");
+                Log.Error("An error occured while updating cart item! => {@ex}",ex);
                 return BadRequest(ex.Message);
             }
         }
@@ -90,7 +88,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while deleting cart item !");
+                Log.Error("An error occured while deleting cart item! => {@ex}",ex);
                 return BadRequest(ex.Message);
             }
         }

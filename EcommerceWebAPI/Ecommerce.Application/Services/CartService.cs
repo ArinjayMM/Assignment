@@ -2,9 +2,7 @@
 using EcommerceWebAPI.Repositories.Interfaces;
 using EcommerceWebAPI.Services.Interfaces;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Serilog;
 
 namespace EcommerceWebAPI.Services
 {
@@ -21,8 +19,9 @@ namespace EcommerceWebAPI.Services
 
         public async Task<IEnumerable<Cart>> GetAllCartItems()
         {
-            _logger.LogInformation("Getting all cart items...");
-            return await _cartRepository.GetAllCartItems();
+            var items = await _cartRepository.GetAllCartItems();
+            Log.Information("All cart items => {@items}", items);
+            return items;
         }
 
         public async Task<IEnumerable<Cart>> GetCartItems(int userId)

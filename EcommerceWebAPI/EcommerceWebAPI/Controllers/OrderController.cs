@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EcommerceWebAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using EcommerceWebAPI.Services.Interfaces;
+using Serilog;
 
 namespace EcommerceWebAPI.Controllers
 {
@@ -18,7 +15,7 @@ namespace EcommerceWebAPI.Controllers
         public OrderController(IOrderService orderService, ILogger<OrderController> logger)
         {
             _orderService = orderService;
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = logger;
         }
 
         [HttpGet]
@@ -31,7 +28,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while fetching ordered items !");
+                Log.Error("An error occured while fetching ordered items! => {@ex}", ex);
                 return BadRequest(ex.Message);
             }
         }
@@ -49,7 +46,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while searching orders !");
+                Log.Error("An error occurred while searching orders! => {@ex}",ex);
                 return BadRequest(ex.Message);
             }
         }
@@ -65,7 +62,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while fetching orderd items !");
+                Log.Error("An error occured while fetching orderd items! => {@ex}",ex);
                 return BadRequest(ex.Message);
             }
         }
@@ -81,7 +78,7 @@ namespace EcommerceWebAPI.Controllers
             catch (Exception ex)
             {
                 // Log the exception for further analysis
-                _logger.LogError(ex, "An error occured while placing the order !");
+                Log.Error("An error occured while placing the order! => {@ex}",ex);
                 return BadRequest("An error occurred while placing the order.");
             }
         }
@@ -96,7 +93,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while updating order item !");
+                Log.Error("An error occured while updating order item! => {@ex}", ex);
                 return BadRequest(ex.Message);
             }
         }
@@ -111,7 +108,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while deleting order item !");
+                Log.Error("An error occured while deleting order item! => {ex}",ex);
                 return BadRequest(ex.Message);
             }
         }

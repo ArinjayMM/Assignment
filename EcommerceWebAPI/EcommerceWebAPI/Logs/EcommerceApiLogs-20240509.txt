@@ -1,0 +1,4 @@
+2024-05-09 19:00:40.711 +05:30 [INF] All cart items => [{"ID":44,"UserId":24,"ProductID":38,"UnitPrice":1117.57,"Discount":57.00,"Quantity":1,"TotalPrice":1117.57,"products":null,"$type":"Cart"}]
+2024-05-09 19:12:52.702 +05:30 [INF] All cart items => [{"ID":44,"UserId":24,"ProductID":38,"UnitPrice":1117.57,"Discount":57.00,"Quantity":1,"TotalPrice":1117.57,"products":null,"$type":"Cart"}]
+2024-05-09 19:15:46.833 +05:30 [INF] All cart items => [{"ID":44,"UserId":24,"ProductID":38,"UnitPrice":1117.57,"Discount":57.00,"Quantity":1,"TotalPrice":1117.57,"products":null,"$type":"Cart"}]
+2024-05-09 19:16:39.966 +05:30 [INF] All cart items => [{"ID":44,"UserId":24,"ProductID":38,"UnitPrice":1117.57,"Discount":57.00,"Quantity":1,"TotalPrice":1117.57,"products":null,"$type":"Cart"}]

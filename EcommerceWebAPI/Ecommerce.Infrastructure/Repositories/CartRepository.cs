@@ -3,6 +3,7 @@ using EcommerceWebAPI.Repositories.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Data;
 using Dapper;
+using Serilog;
 
 namespace EcommerceWebAPI.Repositories
 {

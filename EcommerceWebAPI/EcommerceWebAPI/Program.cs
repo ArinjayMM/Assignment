@@ -2,8 +2,7 @@ using EcommerceWebAPI.Repositories;
 using EcommerceWebAPI.Repositories.Interfaces;
 using EcommerceWebAPI.Services;
 using EcommerceWebAPI.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +29,12 @@ builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 builder.Services.AddTransient<DapperDBContext>();
 builder.Services.AddLogging();
 
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
 var app = builder.Build();
 
 app.UseCors(builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod());
@@ -40,6 +45,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseSwagger();
 app.UseSwaggerUI();
