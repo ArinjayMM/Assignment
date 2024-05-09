@@ -5,7 +5,7 @@ using EcommerceWebAPI.Services;
 using EcommerceWebAPI.Repositories.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace EcommerceWebAPI.Tests
+namespace Ecommerce.Tests.ServicesTest
 {
     [TestFixture]
     public class UserServiceTests

@@ -4,10 +4,10 @@ using Moq;
 using Microsoft.Extensions.Logging;
 using EcommerceWebAPI.Repositories.Interfaces;
 
-namespace ECommerceApp.Tests
+namespace Ecommerce.Tests.ServicesTest
 {
     [TestFixture]
-    public class OrderRepositoryTests
+    public class OrderServiceTest
     {
         private OrderService _orderService;
         private Mock<IOrderRepository> _orderRepositoryMock;

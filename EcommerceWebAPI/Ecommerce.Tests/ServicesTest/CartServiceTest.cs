@@ -5,10 +5,10 @@ using Moq;
 using Microsoft.Extensions.Logging;
 using EcommerceWebAPI.Repositories.Interfaces;
 
-namespace ECommerceApp.Tests
+namespace Ecommerce.Tests.ServicesTest
 {
     [TestFixture]
-    public class CartRepositoryTests
+    public class CartServiceTest
     {
         private CartService _cartService;
         private Mock<ICartRepository> _cartRepositoryMock;
