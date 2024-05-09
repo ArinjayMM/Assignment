@@ -2,8 +2,7 @@
 using EcommerceWebAPI.Repositories.Interfaces;
 using EcommerceWebAPI.Services.Interfaces;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
+using Serilog;
 
 namespace EcommerceWebAPI.Services
 {
@@ -27,28 +26,31 @@ namespace EcommerceWebAPI.Services
                 _logger.LogError($"Login attempt failed for user with email: {email}");
                 return null;
             }
-            _logger.LogInformation($"User with email {email} logged in successfully");
+            Log.Information($"User with email {email} logged in successfully");
             return user;
         }
 
         public async Task<Users> GetUserById(int id)
         {
-            _logger.LogInformation($"Getting user by ID: {id}");
-            return await _userRepository.GetUserById(id);
+            var user = await _userRepository.GetUserById(id);
+            Log.Information($"Getting user by ID: {id} => {user}");
+            return user;
         }
 
         public async Task<Users> AddUser(Users user)
         {
-            _logger.LogInformation("Adding user...");
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-            return await _userRepository.AddUser(user);
+            var addUser = await _userRepository.AddUser(user);
+            Log.Information($"User added => {addUser}");
+            return addUser;
         }
 
         public async Task<Users> UpdateUser(string email, Users user)
         {
-            _logger.LogInformation($"Updating user with email: {email}");
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-            return await _userRepository.UpdateUser(email, user);
+            var updateUser = await _userRepository.UpdateUser(email, user);
+            Log.Information($"Updated user with email: {email}");
+            return updateUser;
         }
     }
 }

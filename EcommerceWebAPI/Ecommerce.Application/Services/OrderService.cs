@@ -2,10 +2,7 @@
 using EcommerceWebAPI.Repositories.Interfaces;
 using EcommerceWebAPI.Services.Interfaces;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Serilog;
 
 namespace EcommerceWebAPI.Services
 {
@@ -22,41 +19,47 @@ namespace EcommerceWebAPI.Services
 
         public async Task<IEnumerable<Orders>> GetAllOrders()
         {
-            _logger.LogInformation("Getting all orders...");
-            return await _orderRepository.GetAllOrders();
+            var orders = await _orderRepository.GetAllOrders();
+            Log.Information($"Getting all orders => {orders}");
+            return orders;
         }
 
         public async Task<IEnumerable<Orders>> SearchOrders(string searchTerm)
         {
-            _logger.LogInformation("Getting order...");
-            return await _orderRepository.SearchOrders(searchTerm);
+            var order = await _orderRepository.SearchOrders(searchTerm);
+            Log.Information($"Getting order for search {searchTerm} => {searchTerm}");
+            return order;
         }
 
         public async Task<IEnumerable<Orders>> GetUserOrders(int userId)
         {
-            _logger.LogInformation($"Getting orders for user ID: {userId}");
-            return await _orderRepository.GetUserOrders(userId);
+            var orders = await _orderRepository.GetUserOrders(userId);
+            Log.Information($"Getting orders for user ID: {userId} => {orders}");
+            return orders;
         }
 
         public async Task<Orders> PlaceOrder(Orders order)
         {
-            _logger.LogInformation("Placing order...");
             // Generate order number
             order.OrderNo = GenerateOrderNumber();
             order.CreatedOn = DateTime.Now;
-            return await _orderRepository.PlaceOrder(order);
+            var addOrder = await _orderRepository.PlaceOrder(order);
+            Log.Information($"Order placed. => {addOrder}");
+            return addOrder;
         }
 
         public async Task<Orders> UpdateOrderStatus(int id, string orderStatus)
         {
-            _logger.LogInformation($"Updating order status for order ID: {id}");
-            return await _orderRepository.UpdateOrderStatus(id, orderStatus);
+            var order = await _orderRepository.UpdateOrderStatus(id, orderStatus);
+            Log.Information($"Updated order status for order ID: {id} => {orderStatus}");
+            return order;
         }
 
         public async Task<bool> DeleteOrder(int id)
         {
-            _logger.LogInformation($"Deleting order with ID: {id}");
-            return await _orderRepository.DeleteOrder(id);
+            var order = await _orderRepository.DeleteOrder(id);
+            Log.Information($"Deleted order with ID: {id} => {order}");
+            return order;
         }
 
         private string GenerateOrderNumber()

@@ -1,10 +1,7 @@
 ﻿using EcommerceWebAPI.Models;
-using EcommerceWebAPI.Services;
 using EcommerceWebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Serilog;
 
 namespace EcommerceWebAPI.Controllers
 {
@@ -31,7 +28,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while fetching products !");
+                Log.Error($"An error occured while fetching products! => {ex}");
                 return BadRequest(ex.Message);
             }
         }
@@ -49,7 +46,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while searching product !");
+                Log.Error($"An error occurred while searching product! => {ex}");
                 return BadRequest(ex.Message);
             }
         }
@@ -68,7 +65,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while fetching product details!");
+                Log.Error($"An error occured while fetching product details! => {ex}");
                 return BadRequest(ex.Message);
             }
         }
@@ -83,7 +80,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while adding product !");
+                Log.Error($"An error occured while adding product! => {ex}");
                 return BadRequest(ex.Message);
             }
         }
@@ -102,7 +99,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while updating product details !");
+                Log.Error($"An error occured while updating product details! => {ex}");
                 return BadRequest(ex.Message);
             }
         }
@@ -121,7 +118,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occured while deleting product !");
+                Log.Error($"An error occured while deleting product! => {ex}");
                 return BadRequest(ex.Message);
             }
         }

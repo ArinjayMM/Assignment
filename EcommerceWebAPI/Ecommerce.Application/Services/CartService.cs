@@ -26,26 +26,30 @@ namespace EcommerceWebAPI.Services
 
         public async Task<IEnumerable<Cart>> GetCartItems(int userId)
         {
-            _logger.LogInformation($"Getting cart items for user ID: {userId}");
-            return await _cartRepository.GetCartItems(userId);
+            var item = await _cartRepository.GetCartItems(userId);
+            Log.Error($"Getting cart items for user ID: {userId} => {item}");
+            return item;
         }
 
         public async Task<Cart> AddtoCart(Cart cart)
         {
-            _logger.LogInformation("Adding to cart...");
-            return await _cartRepository.AddtoCart(cart);
+            var item = await _cartRepository.AddtoCart(cart);
+            Log.Error($"Adding cart item = > {item}");
+            return item;
         }
 
         public async Task<Cart> UpdateCartItem(int id, Cart cart)
         {
-            _logger.LogInformation($"Updating cart item with ID: {id}");
-            return await _cartRepository.UpdateCartItem(id, cart);
+            var item = await _cartRepository.UpdateCartItem(id, cart);
+            Log.Error($"Updating cart item with ID: {id} => {item}");
+            return item;
         }
 
         public async Task<bool> DeleteCartItem(int id)
         {
-            _logger.LogInformation($"Deleting cart item with ID: {id}");
-            return await _cartRepository.DeleteCartItem(id);
+            var item = await _cartRepository.DeleteCartItem(id);
+            Log.Error($"Deleting cart item with ID: {id} => {item}");
+            return item;
         }
     }
 }

@@ -2,9 +2,7 @@
 using EcommerceWebAPI.Repositories.Interfaces;
 using EcommerceWebAPI.Services.Interfaces;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Serilog;
 
 namespace EcommerceWebAPI.Services
 {
@@ -21,38 +19,43 @@ namespace EcommerceWebAPI.Services
 
         public async Task<IEnumerable<Products>> GetAllProducts()
         {
-            _logger.LogInformation("Getting all products...");
-            return await _productRepository.GetAllProducts();
+            var products = await _productRepository.GetAllProducts();
+            Log.Information($"Getting all products {products}");
+            return products;
         }
 
         public async Task<IEnumerable<Products>> SearchProducts(string searchTerm)
         {
-            _logger.LogInformation("Getting product...");
-            return await _productRepository.SearchProducts(searchTerm);
+            var products = await _productRepository.SearchProducts(searchTerm);
+            Log.Information($"Getting product with search term {searchTerm} => {products}");
+            return  products;
         }
 
         public async Task<Products> GetProductById(int id)
         {
-            _logger.LogInformation($"Getting product with ID: {id}");
+            Log.Information($"Getting product with ID: {id}");
             return await _productRepository.GetProductById(id);
         }
 
         public async Task<Products> AddProduct(Products product)
         {
-            _logger.LogInformation("Adding product...");
-            return await _productRepository.AddProduct(product);
+            var products = await _productRepository.AddProduct(product);
+            Log.Information($"Product added => {products}");
+            return products;
         }
 
         public async Task<Products> UpdateProduct(int id, Products product)
         {
-            _logger.LogInformation($"Updating product with ID: {id}");
-            return await _productRepository.UpdateProduct(id, product);
+            var updatedProduct = await _productRepository.UpdateProduct(id, product);
+            Log.Information($"Updating product with ID: {id} => {updatedProduct}");
+            return updatedProduct;
         }
 
         public async Task<bool> DeleteProduct(int id)
         {
-            _logger.LogInformation($"Deleting product with ID: {id}");
-            return await _productRepository.DeleteProduct(id);
+            var product = await _productRepository.DeleteProduct(id);
+            Log.Information($"Deleting product with ID: {id} => {product}");
+            return product;
         }
     }
 }

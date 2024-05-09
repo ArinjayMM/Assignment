@@ -1,7 +1,7 @@
 ﻿using EcommerceWebAPI.Models;
 using EcommerceWebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using Serilog;
 
 namespace EcommerceWebAPI.Controllers
 {
@@ -32,7 +32,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while fetching user by email {Email}", email);
+                Log.Error(ex, "An error occurred while fetching user by email {Email}", email);
                 return StatusCode(500, "An error occurred while processing your request.");
             }
         }
@@ -51,7 +51,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while fetching user by id {Id}", id);
+                Log.Error(ex, "An error occurred while fetching user by id {Id}", id);
                 return StatusCode(500, "An error occurred while processing your request.");
             }
         }
@@ -66,7 +66,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while adding a new user.");
+                Log.Error(ex, "An error occurred while adding a new user.");
                 return StatusCode(500, "An error occurred while processing your request.");
             }
         }
@@ -81,7 +81,7 @@ namespace EcommerceWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while updating user with email {Email}", email);
+                Log.Error(ex, "An error occurred while updating user with email {Email}", email);
                 return StatusCode(500, "An error occurred while processing your request.");
             }
         }
