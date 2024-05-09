@@ -3,7 +3,6 @@ using EcommerceWebAPI.Models;
 using EcommerceWebAPI.Repositories.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Data;
-using System.Threading.Tasks;
 
 namespace EcommerceWebAPI.Repositories
 {
