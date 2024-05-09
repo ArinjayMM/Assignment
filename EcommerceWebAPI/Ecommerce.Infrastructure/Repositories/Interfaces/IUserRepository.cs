@@ -1,6 +1,4 @@
 ﻿using EcommerceWebAPI.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace EcommerceWebAPI.Repositories.Interfaces
 {

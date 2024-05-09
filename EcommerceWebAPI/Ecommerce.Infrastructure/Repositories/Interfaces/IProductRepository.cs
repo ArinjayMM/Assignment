@@ -1,7 +1,4 @@
-﻿// IProductRepository.cs
-using EcommerceWebAPI.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using EcommerceWebAPI.Models;
 
 namespace EcommerceWebAPI.Repositories.Interfaces
 {
